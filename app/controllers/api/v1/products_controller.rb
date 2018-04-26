@@ -16,8 +16,27 @@ class Api::V1::ProductsController < ApplicationController
 
   end
 
+  def destroy
+    product = Product.find(params[:id])
+    product.destroy
+
+    head :no_content
+
+  end
+
+  def update
+    product = Product.find(params[:id])
+    if product.update(products_params)
+      render json: product , status: 200
+    else
+      render json:{errors: product.errors}, status: 422
+    end
+
+  end
+
   private 
     def products_params
       params.require(:product).permit(:name,:price)
+      
     end
 end
